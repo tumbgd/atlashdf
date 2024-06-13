@@ -4,6 +4,7 @@
 #include <vector>
 // The AtlasHDF module
 
+#include <mask_renderer.hpp>
 #include <osm_immediate.h>
 #include <osm_resolvegeom.h>
 
@@ -53,6 +54,13 @@ public:
                          filters["relations"]);
     return *this;
   }
+
+  std::vector<uint8_t> mask(int width, int height, double bbox[4],
+                            std::string bbox_crs,
+                            std::vector<std::string> collections,
+                            std::string crs) {
+    return get_mask(width, height, bbox, bbox_crs, collections, crs);
+  }
 };
 
 // ----------------
@@ -69,5 +77,6 @@ PYBIND11_MODULE(atlashdf, m) {
       .def("set_filter", &AtlasHDF::set_filter)
       .def("clear_filters", &AtlasHDF::clear_filters)
       .def("import_immediate", &AtlasHDF::import)
-      .def("resolve", &AtlasHDF::resolve);
+      .def("resolve", &AtlasHDF::resolve)
+      .def("get_mask", &AtlasHDF::mask);
 }
